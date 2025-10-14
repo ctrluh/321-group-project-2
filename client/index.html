@@ -7,281 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --deep-red: #8b0000;
-            --light-red: #FFB6C1;
-            --soft-coral: #FFB6C1;
-            --cream: #faf5f0;
-            --warm-cream: #f5e6d3;
-            --white: #ffffff;
-            --black: #333333;
-            --sage-green: #87a96b;
-            --dusty-blue: #6b8e8e;
-            --light-gray: #f8f9fa;
-        }
-        
-        body {
-            background-color: var(--cream);
-            font-family: 'Fredoka', sans-serif;
-            color: var(--black);
-        }
-        
-        .color-strip {
-            height: 8px;
-            background: linear-gradient(90deg, var(--deep-red) 25%, var(--deep-red) 25%, var(--deep-red) 50%, var(--deep-red) 50%, var(--deep-red) 75%, var(--deep-red) 75%);
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-        }
-        
-        .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 700;
-        }
-        
-        .navbar-brand {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 700;
-        }
-        
-        .btn {
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 500;
-        }
-        
-        .hero-section {
-            background-color: var(--cream);
-            color: var(--black);
-            padding: 80px 0;
-        }
-        
-        .hero-title {
-            color: var(--deep-red);
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .hero-subtitle {
-            color: var(--deep-red);
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-        }
-        
-        .feature-card {
-            transition: transform 0.3s ease;
-            background-color: white;
-            border: 2px solid var(--light-red) !important;
-            border-radius: 15px !important;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.25) !important;
-        }
-        
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.8rem;
-            color: var(--black) !important;
-        }
-        
-        .navbar-light {
-            background-color: var(--white) !important;
-            border-bottom: 2px solid var(--light-red);
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--black) !important;
-            font-weight: 500;
-            margin: 0 10px;
-        }
-        
-        .navbar-nav .nav-link:hover {
-            color: var(--deep-red) !important;
-        }
-        
-        .btn-primary {
-            background-color: var(--light-red);
-            color: var(--white);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 24px;
-            font-weight: 600;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--deep-red);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
-        }
-        
-        .btn-get-started {
-            background-color: #FFB6C1;
-            color: var(--white);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 24px;
-            font-weight: 600;
-        }
-        
-        .btn-get-started:hover {
-            background-color: var(--deep-red);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
-        }
-        
-        .btn-outline-primary {
-            color: var(--deep-red);
-            border-color: var(--deep-red);
-            border-radius: 25px;
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--deep-red);
-            border-color: var(--deep-red);
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline-danger {
-            color: var(--deep-red);
-            border-color: var(--deep-red);
-            border-radius: 25px;
-        }
-        
-        .btn-outline-danger:hover {
-            background-color: var(--deep-red);
-            border-color: var(--deep-red);
-            transform: translateY(-2px);
-        }
-        
-        .text-primary {
-            color: var(--deep-red) !important;
-        }
-        
-        .text-success {
-            color: var(--sage-green) !important;
-        }
-        
-        .text-warning {
-            color: var(--light-red) !important;
-        }
-        
-        .text-info {
-            color: var(--deep-red) !important;
-        }
-        
-        .bg-light {
-            background-color: var(--light-gray) !important;
-            color: var(--black) !important;
-        }
-        
-        .table-dark {
-            background-color: var(--deep-red) !important;
-        }
-        
-        .badge.bg-primary {
-            background-color: var(--deep-red) !important;
-        }
-        
-        .badge.bg-success {
-            background-color: var(--sage-green) !important;
-        }
-        
-        .badge.bg-warning {
-            background-color: var(--light-red) !important;
-        }
-        
-        .card {
-            background-color: white;
-            border: 2px solid var(--soft-coral);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
-        }
-        
-        .modal-header {
-            background-color: var(--deep-red);
-            border-bottom: none;
-            border-radius: 15px 15px 0 0;
-            color: var(--white);
-        }
-        
-        .form-control:focus {
-            border-color: var(--deep-red);
-            box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
-        }
-        
-        .form-select:focus {
-            border-color: var(--deep-red);
-            box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
-        }
-        
-        .fa-utensils {
-            color: var(--deep-red) !important;
-        }
-        
-        .fa-truck {
-            color: var(--sage-green) !important;
-        }
-        
-        .fa-home {
-            color: var(--light-red) !important;
-        }
-        
-        .fa-recycle {
-            color: var(--deep-red) !important;
-        }
-        
-        .food-scroll-container {
-            overflow: hidden;
-            white-space: nowrap;
-            background-color: var(--cream);
-            padding: 20px 0;
-            border-top: 4px solid var(--soft-coral);
-            border-bottom: 4px solid var(--soft-coral);
-            position: relative;
-            width: 100%;
-        }
-        
-        .food-scroll {
-            display: inline-block;
-            animation: scroll-left 40s linear infinite;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 500;
-            font-size: 1.2rem;
-            color: var(--deep-red);
-            white-space: nowrap;
-        }
-        
-        .food-item {
-            display: inline-block;
-            margin-right: 40px;
-            padding: 10px 20px;
-            background-color: white;
-            border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
-            border: 3px solid var(--soft-coral);
-            font-weight: 600;
-        }
-        
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(100vw);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-        
-        .food-scroll:hover {
-            animation-play-state: paused;
-        }
-    </style>
+    <link href="resources/styles/styles.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -292,17 +18,17 @@
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                         <div class="navbar-nav me-auto">
-                            <a class="nav-link" href="#" onclick="showLandingPage()">About</a>
-                            <a class="nav-link" href="#" onclick="showRestaurantsPage()">Restaurants</a>
-                            <a class="nav-link" href="#" onclick="showVolunteersPage()">Volunteers</a>
-                            <a class="nav-link" href="#" onclick="showSheltersPage()">Shelters</a>
-                            <a class="nav-link" href="#" onclick="showAdminPage()">Admin</a>
+                            <a class="nav-link active" href="index.html">About</a>
+                            <a class="nav-link" href="donation.html">Donations</a>
+                            <a class="nav-link" href="volunteers.html">Volunteers</a>
+                            <a class="nav-link" href="shelter.html">Shelter</a>
+                            <a class="nav-link" href="admin.html">Admin</a>
                         </div>
-                <a class="navbar-brand mx-auto" href="#" onclick="showLandingPage()">
+                <a class="navbar-brand mx-auto" href="index.html">
                     <i class="fas fa-recycle me-2"></i>Leveraging Leftovers
                 </a>
                 <div class="navbar-nav ms-auto">
-                    <button class="btn btn-get-started" onclick="showAdminPage()">Get Started</button>
+                    <a class="btn btn-get-started" href="admin.html">Get Started</a>
                 </div>
             </div>
         </nav>
@@ -314,8 +40,8 @@
                 <div class="container">
                     <h1 class="hero-title">We Believe in</h1>
                     <h2 class="hero-subtitle">Reducing Food Waste. More Than Just</h2>
-                    <p class="lead mb-4">Connecting restaurants with shelters to reduce food waste and feed communities</p>
-                            <button class="btn btn-get-started btn-lg me-3" onclick="showAdminPage()">Get Started</button>
+                    <p class="lead mb-4">Connecting restaurants with volunteers to reduce food waste and feed communities</p>
+                            <a class="btn btn-get-started btn-lg me-3" href="admin.html">Get Started</a>
                     <button class="btn btn-outline-primary btn-lg">Learn More</button>
                 </div>
             </section>
@@ -334,7 +60,7 @@
                             <div class="card feature-card h-100 border-0 shadow">
                                 <div class="card-body text-center p-4">
                                     <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
-                                    <h5 class="card-title">Restaurants Donate</h5>
+                                    <h5 class="card-title">Donations</h5>
                                     <p class="card-text">Restaurants register and donate their leftover food, receiving government benefits in return.</p>
                                 </div>
                             </div>
@@ -344,7 +70,7 @@
                                 <div class="card-body text-center p-4">
                                     <i class="fas fa-truck fa-3x text-success mb-3"></i>
                                     <h5 class="card-title">Volunteers Transport</h5>
-                                    <p class="card-text">Dedicated volunteers help transport food from restaurants to shelters and public spaces.</p>
+                                    <p class="card-text">Dedicated volunteers help transport food from restaurants to public spaces and those in need.</p>
                                 </div>
                             </div>
                         </div>
@@ -352,8 +78,8 @@
                             <div class="card feature-card h-100 border-0 shadow">
                                 <div class="card-body text-center p-4">
                                     <i class="fas fa-home fa-3x text-warning mb-3"></i>
-                                    <h5 class="card-title">Shelters Receive</h5>
-                                    <p class="card-text">Shelters and public spaces receive fresh food to help feed those in need.</p>
+                                    <h5 class="card-title">Community Receives</h5>
+                                    <p class="card-text">Public spaces and those in need receive fresh food to help feed communities.</p>
                                 </div>
                             </div>
                         </div>
@@ -434,7 +160,7 @@
                     <div class="row text-center">
                         <div class="col-md-3 mb-4">
                             <h3 class="display-4 fw-bold text-primary">100+</h3>
-                            <p class="lead">Restaurants</p>
+                            <p class="lead">Donations</p>
                         </div>
                         <div class="col-md-3 mb-4">
                             <h3 class="display-4 fw-bold text-success">500+</h3>
@@ -442,7 +168,7 @@
                         </div>
                         <div class="col-md-3 mb-4">
                             <h3 class="display-4 fw-bold text-warning">50+</h3>
-                            <p class="lead">Shelters</p>
+                            <p class="lead">Community</p>
                         </div>
                         <div class="col-md-3 mb-4">
                             <h3 class="display-4 fw-bold text-info">1000+</h3>
@@ -494,7 +220,7 @@
         <!-- Other Pages Placeholder -->
         <div id="restaurants-page" style="display: none;">
             <div class="container py-5">
-                <h1 class="display-4 fw-bold">Restaurants</h1>
+                <h1 class="display-4 fw-bold">Donations</h1>
                 <p class="lead">Restaurant management features coming soon...</p>
             </div>
         </div>
@@ -506,12 +232,6 @@
             </div>
         </div>
 
-        <div id="shelters-page" style="display: none;">
-            <div class="container py-5">
-                <h1 class="display-4 fw-bold">Shelters</h1>
-                <p class="lead">Shelter management features coming soon...</p>
-            </div>
-        </div>
     </div>
 
     <!-- Add/Edit User Modal -->
@@ -536,7 +256,6 @@
                                 <option value="admin">Admin</option>
                                 <option value="restaurant">Restaurant</option>
                                 <option value="volunteer">Volunteer</option>
-                                <option value="shelter">Shelter</option>
                             </select>
                         </div>
                     </form>

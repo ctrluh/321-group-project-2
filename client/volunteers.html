@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteers - Leveraging Leftovers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link href="resources/styles/styles.css" rel="stylesheet">
+    <link href="resources/styles/volunteers.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link" href="index.html">About</a>
+                    <a class="nav-link" href="donation.html">Donations</a>
+                    <a class="nav-link active" href="volunteers.html">Volunteers</a>
+                    <a class="nav-link" href="shelter.html">Shelter</a>
+                    <a class="nav-link" href="admin.html">Admin</a>
+                </div>
+            <a class="navbar-brand mx-auto" href="index.html">
+                <i class="fas fa-recycle me-2"></i>Leveraging Leftovers
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-get-started" onclick="showVolunteerRegistration()">Become a Volunteer</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-5 pt-4">
+        <!-- Volunteer Selection Section -->
+        <div class="row mb-4" id="volunteer-selection-section">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light border-0">
+                        <h5 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-user-circle me-2"></i>Select Volunteer Account
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <label for="volunteer-select" class="form-label">Select Volunteer Account</label>
+                            <select class="form-select" id="volunteer-select" required>
+                                <option value="">Select a volunteer...</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="loginVolunteer()">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login as Volunteer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Volunteer Dashboard (Hidden initially) -->
+        <div id="volunteer-dashboard" style="display: none;">
+            <!-- Welcome Header -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h2 class="card-title mb-1 fw-bold text-primary">
+                                        <i class="fas fa-truck me-2"></i>Welcome, <span id="welcomeMessage">Loading...</span>
+                                    </h2>
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-car me-1"></i>
+                                        Vehicle: <span id="vehicleInfo">Loading...</span>
+                                    </p>
+                                </div>
+                                <div class="text-end">
+                                    <div class="badge bg-success fs-6 mb-2" id="statusBadge">
+                                        <i class="fas fa-check-circle me-1"></i>Available
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm" onclick="volunteerInterface.logout()">
+                                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-truck fa-3x text-success mb-3"></i>
+                            <h3 class="display-6 fw-bold text-success" id="totalPickups">0</h3>
+                            <p class="lead">Total Pickups</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                            <h3 class="display-6 fw-bold text-warning" id="rating">0.0</h3>
+                            <p class="lead">Rating</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-weight fa-3x text-info mb-3"></i>
+                            <h3 class="display-6 fw-bold text-info" id="totalWeight">0</h3>
+                            <p class="lead">Lbs Delivered</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                            <h3 class="display-6 fw-bold text-primary" id="avgTime">0</h3>
+                            <p class="lead">Avg Time (min)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Food Donations -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-utensils me-2"></i>Available Food Donations
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Restaurant</th>
+                                            <th>Food Item</th>
+                                            <th>Weight (lbs)</th>
+                                            <th>Expiry</th>
+                                            <th>Pickup Location</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="available-donations-table">
+                                        <!-- Donations will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Pickup (Hidden initially) -->
+            <div class="row mb-4" id="current-pickup-section" style="display: none;">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-map-marker-alt me-2"></i>Current Pickup
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Pickup Details</h6>
+                                    <p><strong>Restaurant:</strong> <span id="current-restaurant">Loading...</span></p>
+                                    <p><strong>Food Item:</strong> <span id="current-food-item">Loading...</span></p>
+                                    <p><strong>Weight:</strong> <span id="current-weight">Loading...</span> lbs</p>
+                                    <p><strong>Pickup Location:</strong> <span id="current-pickup-location">Loading...</span></p>
+                                    <p><strong>Special Instructions:</strong> <span id="current-instructions">None</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Delivery Details</h6>
+                                    <p><strong>Delivery Location:</strong> <span id="current-delivery-location">Loading...</span></p>
+                                    <p><strong>Distance:</strong> <span id="current-distance">Loading...</span> miles</p>
+                                    <p><strong>Estimated Time:</strong> <span id="current-time">Loading...</span> minutes</p>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-success me-2" onclick="volunteerInterface.startPickup()">
+                                    <i class="fas fa-play me-2"></i>Start Pickup
+                                </button>
+                                <button class="btn btn-warning me-2" onclick="volunteerInterface.completePickup()">
+                                    <i class="fas fa-check me-2"></i>Complete Pickup
+                                </button>
+                                <button class="btn btn-danger" onclick="volunteerInterface.cancelPickup()">
+                                    <i class="fas fa-times me-2"></i>Cancel Pickup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-map me-2"></i>Pickup Locations Map
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="map" style="height: 400px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Volunteer Registration Modal -->
+    <div class="modal fade" id="volunteerRegistrationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Become a Volunteer</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="volunteerRegistrationForm">
+                        <div class="mb-3">
+                            <label for="volunteerName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="volunteerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="volunteerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="volunteerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="volunteerPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="volunteerPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vehicleType" class="form-label">Vehicle Type</label>
+                            <select class="form-select" id="vehicleType" required>
+                                <option value="">Select vehicle type...</option>
+                                <option value="Car">Car</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Van">Van</option>
+                                <option value="Bicycle">Bicycle</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="licensePlate" class="form-label">License Plate</label>
+                            <input type="text" class="form-control" id="licensePlate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="availability" class="form-label">Availability</label>
+                            <select class="form-select" id="availability" required>
+                                <option value="">Select availability...</option>
+                                <option value="Weekdays">Weekdays</option>
+                                <option value="Weekends">Weekends</option>
+                                <option value="Evenings">Evenings</option>
+                                <option value="Flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="volunteerInterface.registerVolunteer()">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pickup Details Modal -->
+    <div class="modal fade" id="pickupDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Pickup Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="pickup-details-content">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="volunteerInterface.acceptPickup()">Accept Pickup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="resources/scripts/volunteers.js"></script>
+    
+    <!-- Debug script to check if page is loading -->
+    <script>
+        console.log('Volunteers page loaded successfully');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing volunteer interface...');
+            // Add some basic functionality to test
+            const volunteerSelect = document.getElementById('volunteer-select');
+            if (volunteerSelect) {
+                console.log('Volunteer select element found');
+                // Add some mock options
+                const mockVolunteers = [
+                    { id: 1, name: 'John Doe', email: 'john@email.com' },
+                    { id: 2, name: 'Jane Smith', email: 'jane@email.com' },
+                    { id: 3, name: 'Mike Johnson', email: 'mike@email.com' }
+                ];
+                
+                mockVolunteers.forEach(volunteer => {
+                    const option = document.createElement('option');
+                    option.value = volunteer.id;
+                    option.textContent = `${volunteer.name} (${volunteer.email})`;
+                    volunteerSelect.appendChild(option);
+                });
+            } else {
+                console.error('Volunteer select element not found');
+            }
+        });
+        
+        // Basic login functionality
+        function loginVolunteer() {
+            const volunteerSelect = document.getElementById('volunteer-select');
+            const selectedValue = volunteerSelect.value;
+            
+            if (!selectedValue) {
+                alert('Please select a volunteer account.');
+                return;
+            }
+            
+            console.log('Logging in volunteer:', selectedValue);
+            
+            // Hide selection section and show dashboard
+            document.getElementById('volunteer-selection-section').style.display = 'none';
+            document.getElementById('volunteer-dashboard').style.display = 'block';
+            
+            // Update welcome message
+            const selectedOption = volunteerSelect.options[volunteerSelect.selectedIndex];
+            document.getElementById('welcomeMessage').textContent = selectedOption.textContent.split(' (')[0];
+            
+            // Load mock donations
+            loadMockDonations();
+            
+            alert('Successfully logged in as volunteer!');
+        }
+        
+        // Load mock donations
+        function loadMockDonations() {
+            const mockDonations = [
+                {
+                    id: 1,
+                    restaurantName: "Mario's Italian Bistro",
+                    foodItem: "Fresh Bread",
+                    weight: 15.5,
+                    expiryDate: "2024-01-15",
+                    pickupLocation: "123 Main Street, Tuscaloosa, AL"
+                },
+                {
+                    id: 2,
+                    restaurantName: "Campus Corner Cafe",
+                    foodItem: "Vegetable Soup",
+                    weight: 25.0,
+                    expiryDate: "2024-01-16",
+                    pickupLocation: "456 University Blvd, Tuscaloosa, AL"
+                },
+                {
+                    id: 3,
+                    restaurantName: "Downtown Diner",
+                    foodItem: "Sandwiches",
+                    weight: 12.0,
+                    expiryDate: "2024-01-14",
+                    pickupLocation: "789 Downtown Ave, Tuscaloosa, AL"
+                }
+            ];
+            
+            const tbody = document.getElementById('available-donations-table');
+            if (tbody) {
+                tbody.innerHTML = '';
+                
+                mockDonations.forEach(donation => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${donation.restaurantName}</td>
+                        <td>${donation.foodItem}</td>
+                        <td>${donation.weight} lbs</td>
+                        <td>${new Date(donation.expiryDate).toLocaleDateString()}</td>
+                        <td>${donation.pickupLocation}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-2" onclick="viewPickupDetails(${donation.id})">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="acceptPickup(${donation.id})">
+                                <i class="fas fa-check"></i> Accept
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+        
+        // View pickup details
+        function viewPickupDetails(donationId) {
+            alert(`Viewing details for donation ID: ${donationId}`);
+        }
+        
+        // Accept pickup
+        function acceptPickup(donationId) {
+            alert(`Accepting pickup for donation ID: ${donationId}`);
+        }
+        
+        // Show volunteer registration
+        function showVolunteerRegistration() {
+            alert('Volunteer registration form would open here.');
+        }
+    </script>
+</body>
+</html>

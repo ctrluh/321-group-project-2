@@ -3,7 +3,6 @@ let users = [
     { id: 1, name: "John Smith", role: "admin" },
     { id: 2, name: "Maria Garcia", role: "restaurant" },
     { id: 3, name: "David Johnson", role: "volunteer" },
-    { id: 4, name: "Sarah Wilson", role: "shelter" },
     { id: 5, name: "Mike Chen", role: "restaurant" },
     { id: 6, name: "Lisa Brown", role: "volunteer" }
 ];
@@ -33,13 +32,8 @@ function showVolunteersPage() {
     document.getElementById('volunteers-page').style.display = 'block';
 }
 
-function showSheltersPage() {
-    hideAllPages();
-    document.getElementById('shelters-page').style.display = 'block';
-}
-
 function hideAllPages() {
-    const pages = ['landing-page', 'admin-page', 'restaurants-page', 'volunteers-page', 'shelters-page'];
+    const pages = ['landing-page', 'admin-page', 'restaurants-page', 'volunteers-page'];
     pages.forEach(pageId => {
         document.getElementById(pageId).style.display = 'none';
     });
@@ -55,16 +49,10 @@ function loadUsersTable() {
         row.innerHTML = `
             <td>${user.id}</td>
             <td>${user.name}</td>
+            <td><span class="badge bg-${getRoleBadgeColor(user.role)}">${capitalizeFirst(user.role)}</span></td>
             <td>
-                <span class="badge bg-${getRoleBadgeColor(user.role)}">${capitalizeFirst(user.role)}</span>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary me-2" onclick="editUser(${user.id})">
-                    <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
+                <button class="btn btn-sm btn-outline-primary me-2" onclick="editUser(${user.id})">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -76,7 +64,6 @@ function getRoleBadgeColor(role) {
         'admin': 'danger',
         'restaurant': 'primary',
         'volunteer': 'success',
-        'shelter': 'warning'
     };
     return colors[role] || 'secondary';
 }
@@ -85,32 +72,8 @@ function capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function showAddUserModal() {
-    document.getElementById('userModalTitle').textContent = 'Add New User';
-    document.getElementById('userId').value = '';
-    document.getElementById('userName').value = '';
-    document.getElementById('userRole').value = '';
-    
-    const modal = new bootstrap.Modal(document.getElementById('userModal'));
-    modal.show();
-}
-
-function editUser(id) {
-    const user = users.find(u => u.id === id);
-    if (user) {
-        document.getElementById('userModalTitle').textContent = 'Edit User';
-        document.getElementById('userId').value = user.id;
-        document.getElementById('userName').value = user.name;
-        document.getElementById('userRole').value = user.role;
-        
-        const modal = new bootstrap.Modal(document.getElementById('userModal'));
-        modal.show();
-    }
-}
-
-function saveUser() {
-    const id = document.getElementById('userId').value;
-    const name = document.getElementById('userName').value.trim();
+function addUser() {
+    const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
     
     if (!name || !role) {
@@ -118,30 +81,65 @@ function saveUser() {
         return;
     }
     
-    if (id) {
-        // Edit existing user
-        const userIndex = users.findIndex(u => u.id === parseInt(id));
-        if (userIndex !== -1) {
-            users[userIndex].name = name;
-            users[userIndex].role = role;
-        }
-    } else {
-        // Add new user
-        const newUser = {
-            id: nextId++,
-            name: name,
-            role: role
-        };
-        users.push(newUser);
-    }
+    const newUser = {
+        id: nextId++,
+        name: name,
+        role: role
+    };
     
-    // Close modal and refresh table
+    users.push(newUser);
+    loadUsersTable();
+    
+    // Close modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
     modal.hide();
-    loadUsersTable();
+    
+    // Reset form
+    document.getElementById('userForm').reset();
+}
+
+function editUser(id) {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    document.getElementById('userName').value = user.name;
+    document.getElementById('userRole').value = user.role;
+    document.getElementById('userForm').setAttribute('data-edit-id', id);
+    
+    const modal = new bootstrap.Modal(document.getElementById('userModal'));
+    modal.show();
+}
+
+function updateUser() {
+    const id = parseInt(document.getElementById('userForm').getAttribute('data-edit-id'));
+    const name = document.getElementById('userName').value;
+    const role = document.getElementById('userRole').value;
+    
+    if (!name || !role) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    const userIndex = users.findIndex(u => u.id === id);
+    if (userIndex !== -1) {
+        users[userIndex].name = name;
+        users[userIndex].role = role;
+        loadUsersTable();
+    }
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+    modal.hide();
+    
+    // Reset form
+    document.getElementById('userForm').reset();
+    document.getElementById('userForm').removeAttribute('data-edit-id');
 }
 
 function deleteUser(id) {
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
     userToDelete = id;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
@@ -150,16 +148,28 @@ function deleteUser(id) {
 function confirmDelete() {
     if (userToDelete) {
         users = users.filter(u => u.id !== userToDelete);
+        loadUsersTable();
         userToDelete = null;
         
+        // Close modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
         modal.hide();
-        loadUsersTable();
     }
 }
 
-// Initialize the application
+// Form submission handler
+document.getElementById('userForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const isEdit = this.hasAttribute('data-edit-id');
+    if (isEdit) {
+        updateUser();
+    } else {
+        addUser();
+    }
+});
+
+// Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
-    // Show landing page by default
     showLandingPage();
 });

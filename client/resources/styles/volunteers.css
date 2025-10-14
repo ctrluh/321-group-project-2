@@ -1,0 +1,377 @@
+/* Volunteers Page Specific Styles */
+
+/* Map container styling */
+#map {
+    border-radius: 0 0 8px 8px;
+    z-index: 1;
+}
+
+/* Volunteer dashboard cards */
+.volunteer-stats-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid var(--soft-coral);
+    border-radius: 15px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.volunteer-stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.25);
+}
+
+/* Status badges */
+.status-available {
+    background-color: var(--sage-green) !important;
+    color: white !important;
+}
+
+.status-pickup {
+    background-color: var(--light-red) !important;
+    color: white !important;
+}
+
+.status-transit {
+    background-color: var(--dusty-blue) !important;
+    color: white !important;
+}
+
+.status-completed {
+    background-color: var(--sage-green) !important;
+    color: white !important;
+}
+
+/* Current pickup section */
+.current-pickup-card {
+    border-left: 5px solid var(--light-red);
+    background: linear-gradient(135deg, #fff8f8 0%, #ffffff 100%);
+}
+
+/* Donations table styling */
+.donations-table {
+    font-size: 0.9rem;
+}
+
+.donations-table th {
+    background-color: var(--deep-red);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 12px 8px;
+}
+
+.donations-table td {
+    padding: 12px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.donations-table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+/* Action buttons */
+.btn-pickup {
+    background-color: var(--sage-green);
+    border-color: var(--sage-green);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-pickup:hover {
+    background-color: #6b8e8e;
+    border-color: #6b8e8e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(107, 142, 142, 0.3);
+}
+
+.btn-view {
+    background-color: var(--deep-red);
+    border-color: var(--deep-red);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    background-color: #6b0000;
+    border-color: #6b0000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+}
+
+/* Volunteer selection card */
+.volunteer-selection-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid var(--soft-coral);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+/* Welcome header */
+.welcome-header {
+    background: linear-gradient(135deg, var(--cream) 0%, #ffffff 100%);
+    border: 2px solid var(--soft-coral);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+/* Statistics cards */
+.stats-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid var(--soft-coral);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--deep-red), var(--light-red), var(--sage-green));
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.25);
+}
+
+.stats-card .card-body {
+    padding: 1.5rem;
+}
+
+.stats-card i {
+    transition: transform 0.3s ease;
+}
+
+.stats-card:hover i {
+    transform: scale(1.1);
+}
+
+/* Map card */
+.map-card {
+    border: 2px solid var(--soft-coral);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.15);
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 15px;
+    border: 2px solid var(--soft-coral);
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.25);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--deep-red) 0%, var(--light-red) 100%);
+    border-radius: 15px 15px 0 0;
+    color: white;
+    border-bottom: none;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: var(--deep-red);
+    box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--deep-red);
+    box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+}
+
+/* Alert styling */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    color: #856404;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+}
+
+/* Button animations */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--deep-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .stats-card .card-body {
+        padding: 1rem;
+    }
+    
+    .donations-table {
+        font-size: 0.8rem;
+    }
+    
+    .donations-table th,
+    .donations-table td {
+        padding: 8px 4px;
+    }
+    
+    #map {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .volunteer-selection-card .card-body {
+        padding: 1rem;
+    }
+    
+    .welcome-header .card-body {
+        padding: 1rem;
+    }
+    
+    .stats-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Custom scrollbar */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--soft-coral);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--light-red);
+}
+
+/* Map popup styling */
+.leaflet-popup-content {
+    font-family: 'Fredoka', sans-serif;
+}
+
+.leaflet-popup-content .btn {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+}
+
+/* Volunteer registration form */
+.volunteer-registration-form .form-label {
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+}
+
+.volunteer-registration-form .form-control,
+.volunteer-registration-form .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.volunteer-registration-form .form-control:focus,
+.volunteer-registration-form .form-select:focus {
+    border-color: var(--deep-red);
+    box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Pickup details modal */
+.pickup-details-content h6 {
+    color: var(--deep-red);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--soft-coral);
+}
+
+.pickup-details-content p {
+    margin-bottom: 0.5rem;
+    color: var(--black);
+}
+
+.pickup-details-content strong {
+    color: var(--deep-red);
+    font-weight: 600;
+}

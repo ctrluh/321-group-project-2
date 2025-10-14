@@ -48,7 +48,15 @@
               "target": "Package",
               "version": "[9.0.9, )"
             },
-            "Microsoft.Data.SQLite": {
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[9.0.9, )"
             }

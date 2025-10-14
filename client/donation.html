@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Portal - Leveraging Leftovers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="resources/styles/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Color Strip -->
+        <div class="color-strip"></div>
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link" href="index.html">About</a>
+                    <a class="nav-link active" href="donation.html">Donations</a>
+                    <a class="nav-link" href="volunteers.html">Volunteers</a>
+                    <a class="nav-link" href="shelter.html">Shelter</a>
+                    <a class="nav-link" href="admin.html">Admin</a>
+                </div>
+                <a class="navbar-brand mx-auto" href="index.html">
+                    <i class="fas fa-recycle me-2"></i>Leveraging Leftovers
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <button class="btn btn-get-started" onclick="showAddFoodModal()">Create Food Order</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Donation Portal -->
+        <div class="container py-5">
+            <!-- Header Section -->
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold text-primary">Donation Portal</h1>
+                    <p class="lead">Manage your food donations and help reduce waste</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-5">
+                <div class="col-md-3 mb-4">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
+                            <h3 class="display-6 fw-bold text-primary" id="totalDonations">0</h3>
+                            <p class="lead">Total Donations</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-shopping-cart fa-3x text-info mb-3"></i>
+                            <h3 class="display-6 fw-bold text-info" id="totalOrders">0</h3>
+                            <p class="lead">Food Orders</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h3 class="display-6 fw-bold text-success" id="completedPickups">0</h3>
+                            <p class="lead">Completed Pickups</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card feature-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-weight fa-3x text-warning mb-3"></i>
+                            <h3 class="display-6 fw-bold text-warning" id="totalWeight">0</h3>
+                            <p class="lead">Lbs Donated</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Food Donation Orders Table -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Current Food Donation Orders</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Food Items</th>
+                                            <th>Order Date</th>
+                                            <th>Pickup Time</th>
+                                            <th>Weight (lbs)</th>
+                                            <th>Status</th>
+                                            <th>Volunteer</th>
+                                            <th>Shelter Destination</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="current-orders-table-body">
+                                        <!-- Current orders will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Past Food Donation Orders Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i>Past Food Donation Orders</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Food Items</th>
+                                            <th>Order Date</th>
+                                            <th>Completed Date</th>
+                                            <th>Weight (lbs)</th>
+                                            <th>Volunteer</th>
+                                            <th>Shelter Destination</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="past-orders-table-body">
+                                        <!-- Past orders will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Food Order Modal -->
+    <div class="modal fade" id="addFoodModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Create Food Order</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="foodForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="orderDate" class="form-label">Order Date</label>
+                                <input type="date" class="form-control" id="orderDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="pickupTime" class="form-label">Pickup Time</label>
+                                <input type="time" class="form-control" id="pickupTime" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="shelterDestination" class="form-label">Shelter Destination</label>
+                            <select class="form-control" id="shelterDestination" required>
+                                <option value="">Select a shelter...</option>
+                                <option value="Tuscaloosa Community Center">Tuscaloosa Community Center</option>
+                                <option value="Salvation Army Tuscaloosa">Salvation Army Tuscaloosa</option>
+                                <option value="Tuscaloosa Metro Animal Shelter">Tuscaloosa Metro Animal Shelter</option>
+                                <option value="Tuscaloosa VA Medical Center">Tuscaloosa VA Medical Center</option>
+                                <option value="Tuscaloosa County Jail">Tuscaloosa County Jail</option>
+                                <option value="Tuscaloosa City Schools">Tuscaloosa City Schools</option>
+                                <option value="Other">Other (specify in notes)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foodItems" class="form-label">Food Items</label>
+                            <textarea class="form-control" id="foodItems" rows="3" placeholder="Describe the food items (e.g., 50 sandwiches, 30 salads, 20 soups)" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" min="1" placeholder="Total quantity">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="weight" class="form-label">Weight (lbs)</label>
+                                <input type="number" class="form-control" id="weight" min="0.1" step="0.1" placeholder="Estimated weight">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expiryDate" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="expiryDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialInstructions" class="form-label">Special Instructions</label>
+                            <textarea class="form-control" id="specialInstructions" rows="2" placeholder="Any special instructions for pickup or delivery"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactPhone" class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-control" id="contactPhone" placeholder="(205) 555-0123">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addFoodOrder()">Create Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Food Donation Modal -->
+    <div class="modal fade" id="editFoodModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Food Donation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFoodForm">
+                        <div class="mb-3">
+                            <label for="editFoodItem" class="form-label">Food Item</label>
+                            <input type="text" class="form-control" id="editFoodItem" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editQuantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="editQuantity" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editWeight" class="form-label">Weight (lbs)</label>
+                            <input type="number" class="form-control" id="editWeight" min="0.1" step="0.1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editExpiryDate" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="editExpiryDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateFoodDonation()">Update Donation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this food donation? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="resources/scripts/donation.js"></script>
+</body>
+</html>
+
