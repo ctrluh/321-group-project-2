@@ -43,17 +43,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.Data.Sqlite": {
-              "target": "Package",
-              "version": "[8.0.8, )"
-            },
             "Microsoft.EntityFrameworkCore.Design": {
               "target": "Package",
               "version": "[8.0.8, )"
             },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
+            "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[8.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

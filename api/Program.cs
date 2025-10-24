@@ -13,7 +13,8 @@ builder.Services.AddControllers()
 
 // Add Entity Framework
 builder.Services.AddDbContext<FoodWasteDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        new MySqlServerVersion(new Version(8, 0, 21))));
 
 builder.Services.AddCors(options => 
 { 
