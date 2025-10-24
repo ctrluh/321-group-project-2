@@ -6,7 +6,14 @@ class VolunteerInterface {
         this.map = null;
         this.markers = [];
         this.availableDonations = [];
-        this.apiBaseUrl = 'http://localhost:5213/api'; // Your food waste API base URL
+        
+        // Check if running from file:// protocol and show helpful message
+        if (window.location.protocol === 'file:') {
+            this.showAlert('⚠️ For security reasons, browsers block API calls from file:// protocol. Please either:<br>1. Use a local web server (python3 -m http.server 8080)<br>2. Or open the file through a web server', 'warning');
+            this.apiBaseUrl = null; // Disable API calls
+        } else {
+            this.apiBaseUrl = 'http://localhost:5279/api'; // Your food waste API base URL
+        }
     }
 
     // Initialize the volunteer interface
@@ -342,32 +349,96 @@ class VolunteerInterface {
 
     // Register new volunteer
     async registerVolunteer() {
-        const form = document.getElementById('volunteerRegistrationForm');
-        const formData = new FormData(form);
+        // Check if API calls are disabled (file:// protocol)
+        if (!this.apiBaseUrl) {
+            this.showAlert('API calls are disabled when opening files directly. Please use a web server.', 'danger');
+            return;
+        }
         
+        const form = document.getElementById('volunteerRegistrationForm');
+        
+        // Get form data
+        const fullName = document.getElementById('volunteerName').value.trim();
+        const email = document.getElementById('volunteerEmail').value.trim();
+        const phoneNumber = document.getElementById('volunteerPhone').value.trim();
+        const vehicleType = document.getElementById('vehicleType').value;
+        const licensePlate = document.getElementById('licensePlate').value.trim();
+        const availability = document.getElementById('availability').value;
+
+        // Validate required fields
+        if (!fullName || !email || !phoneNumber || !vehicleType || !licensePlate || !availability) {
+            this.showAlert('Please fill in all required fields.', 'warning');
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            this.showAlert('Please enter a valid email address.', 'warning');
+            return;
+        }
+
+        // Split name into first and last
+        const nameParts = fullName.split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ') || 'Volunteer'; // Default last name if not provided
+
+        console.log('Name parts:', { fullName, firstName, lastName });
+
+        // Generate username from email (before @ symbol)
+        const username = email.split('@')[0];
+
         const volunteerData = {
-            firstName: document.getElementById('volunteerName').value.split(' ')[0],
-            lastName: document.getElementById('volunteerName').value.split(' ').slice(1).join(' '),
-            email: document.getElementById('volunteerEmail').value,
-            phoneNumber: document.getElementById('volunteerPhone').value,
-            role: 'Volunteer'
+            Username: username,
+            Email: email,
+            Password: 'volunteer123', // Default password - in production, generate or require
+            FirstName: firstName,
+            LastName: lastName,
+            PhoneNumber: phoneNumber,
+            VehicleType: vehicleType,
+            LicensePlate: licensePlate,
+            Availability: availability
         };
 
         try {
-            // In a real application, you would make an API call here
             console.log('Registering volunteer:', volunteerData);
+            console.log('API URL:', `${this.apiBaseUrl}/Volunteers`);
             
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('volunteerRegistrationModal'));
-            modal.hide();
-            
-            // Reset form
-            form.reset();
-            
-            this.showAlert('Volunteer registration submitted! We will contact you soon.', 'success');
+            // Make API call to register volunteer
+            const response = await fetch(`${this.apiBaseUrl}/Volunteers`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(volunteerData)
+            });
+
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Volunteer registered successfully:', result);
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('volunteerRegistrationModal'));
+                modal.hide();
+                
+                // Reset form
+                form.reset();
+                
+                this.showAlert('Volunteer registration successful! You can now log in with your email and password "volunteer123".', 'success');
+                
+                // Optionally refresh the volunteer list or update UI
+                this.loadVolunteers();
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Registration failed:', response.status, errorData);
+                this.showAlert(`Registration failed: ${errorData.message || 'Please try again.'}`, 'danger');
+            }
         } catch (error) {
             console.error('Error registering volunteer:', error);
-            this.showAlert('Error registering volunteer. Please try again.', 'danger');
+            this.showAlert('Error registering volunteer. Please check your connection and try again.', 'danger');
         }
     }
 
